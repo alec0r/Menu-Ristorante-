@@ -2,6 +2,7 @@ package main;
 
 import java.io.IOException;
 
+
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -10,6 +11,8 @@ import jakarta.xml.bind.Unmarshaller;
 
 import jakarta.xml.bind.JAXBException;
 import model.ListaPiatti;
+import model.Ingredienti;
+import model.ListaIngredienti;
 import model.Piatto;
 import view.Menu;
 
@@ -17,10 +20,10 @@ public class LeggiUtenti {
 
 	public static void main(String[] args) {
 		
-		String url= "http://localhost/prova/php/api.php";
+		String url= "http://localhost/php/api.php";
 		
 		URL webServiceUrl = null;	
-		ListaPiatti utenti = null;	
+		ListaIngredienti utenti = null;	
 		JAXBContext context =null;
 		Menu frame= null;
 		
@@ -28,12 +31,13 @@ public class LeggiUtenti {
 						
 			webServiceUrl = new URL(url); 
 	
-			context = JAXBContext.newInstance(ListaPiatti.class);
+			context = JAXBContext.newInstance(ListaIngredienti.class);
 			Unmarshaller unmarshaller = context.createUnmarshaller();
-			utenti = (ListaPiatti) unmarshaller.unmarshal(webServiceUrl);
+			utenti = (ListaIngredienti) unmarshaller.unmarshal(webServiceUrl);
 			
-			for(Piatto u: utenti.getPiatti())
+			for(Ingredienti u: utenti.getIngredienti())
 				System.out.println(u.toString());
+			
 		 
 		}
 		catch(IOException | JAXBException e) {
