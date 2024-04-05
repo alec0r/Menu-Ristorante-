@@ -11,12 +11,10 @@ import javax.swing.JPanel;
 public class BackgroundMenu extends JPanel {
 	
 	private BufferedImage sfondo;
-	/**
-	 * Create the panel.
-	 */
-	public BackgroundMenu() {
+	
+	public BackgroundMenu(boolean flag) {
 		 try {
-             this.sfondo = ImageIO.read(new File("img/ristorantegiardino.png"));
+				this.sfondo = ImageIO.read(new File("img/ristorantegiardinoblur.png"));
          }
          catch(Exception e) {
              this.setBackground(Color.DARK_GRAY);  
@@ -26,4 +24,5 @@ public class BackgroundMenu extends JPanel {
 	 public void paintComponent(Graphics g){
 	        g.drawImage(sfondo, 0, 0,null);
 	}
+	
 }

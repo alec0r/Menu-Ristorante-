@@ -8,6 +8,8 @@ import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -30,15 +32,18 @@ import model.ListaPiatti;
 import model.Piatto;
 import control.Controller;
 
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Image;
 
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.JTextPane;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
@@ -54,20 +59,20 @@ public class Menu extends JFrame {
 	private JPanel panel_1;
 	private JButton Antipasti;
 	private JButton Primi;
-	
+	private BufferedImage sfondo;
 	
 
 	public Menu() {
+		super("MENU RISTORANTE GIARDINO");
+		inizializzaPannello();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(0, 0);
 		this.setExtendedState(this.MAXIMIZED_BOTH);
 		this.setBounds(100, 100, 1280, 920);
-		contentPane = new BackgroundMenu();
 		contentPane.setBackground(new Color(255, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		
-	
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
@@ -78,13 +83,14 @@ public class Menu extends JFrame {
 		titolo.setBounds(74, 25, 500, 90);
 		contentPane.add(titolo, BorderLayout.NORTH);
 		
+		
+		
 		panel = new JPanel();
 		panel.setOpaque(false);
 		panel.setBackground(new Color(255, 255, 255));
-		panel.setBounds(1061, 25, 484, 71);
-		contentPane.add(panel);
+		panel.setBounds(1061, 40, 484, 71);
+		contentPane.add(panel, BorderLayout.NORTH);
 		panel.setLayout(null);
-		panel.setVisible(false);
 		
 		Secondi = new JButton("Secondi");
 		Secondi.setBounds(249, 23, 102, 23);
@@ -92,7 +98,7 @@ public class Menu extends JFrame {
 		Secondi.setFocusable(false);
 		Secondi.setContentAreaFilled(false);
 		Secondi.setBorderPainted(false);
-		Secondi.setFont(new Font("Arial", Font.PLAIN, 15));
+		Secondi.setFont(new Font("Arial", Font.PLAIN, 18));
 		panel.add(Secondi);
 		Secondi.setName("Secondo Piatto");
 		Dessert = new JButton("Dessert");
@@ -101,16 +107,16 @@ public class Menu extends JFrame {
 		Dessert.setContentAreaFilled(false);
 		Dessert.setFocusable(false);
 		Dessert.setBorderPainted(false);
-		Dessert.setFont(new Font("Arial", Font.PLAIN, 15));
+		Dessert.setFont(new Font("Arial", Font.PLAIN, 18));
 		panel.add(Dessert);
-		Dessert.setName("Dolce");
+		Dessert.setName("Dessert");
 		Antipasti = new JButton("Antipasti");
 		Antipasti.setForeground(new Color(255, 255, 255));
 		Antipasti.setBounds(25, 23, 102, 23);
 		Antipasti.setFocusable(false);
 		Antipasti.setContentAreaFilled(false);
 		Antipasti.setBorderPainted(false);
-		Antipasti.setFont(new Font("Arial", Font.PLAIN, 15));
+		Antipasti.setFont(new Font("Arial", Font.PLAIN, 18));
 		panel.add(Antipasti);
 		Antipasti.setName("Antipasto");
 		Primi = new JButton("Primi");
@@ -119,7 +125,7 @@ public class Menu extends JFrame {
 		Primi.setFocusable(false);
 		Primi.setContentAreaFilled(false);
 		Primi.setBorderPainted(false);
-        Primi.setFont(new Font("Arial", Font.PLAIN, 15));
+        Primi.setFont(new Font("Arial", Font.PLAIN, 18));
 		panel.add(Primi);
 		Primi.setName("Primo Piatto");
 		panel_1 = new JPanel();
@@ -128,14 +134,53 @@ public class Menu extends JFrame {
 		panel_1.setBounds(30, 128, getWidth()-60, 724);
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
+		
+		lblNewLabel = new JLabel("Benvenuti nel nostro Ristorante");
+		lblNewLabel.setForeground(new Color(255, 255, 255));
+		lblNewLabel.setFont(new Font("Goudy Old Style", Font.PLAIN, 60));
+		lblNewLabel.setBounds(426, 190, 840, 166);
+		panel_1.add(lblNewLabel);
+		
+		lblNewLabel_1 = new JLabel("<html><div style='text-align: center;'>\"Dove ogni boccone è<br>un viaggio culinario unico\".</div><html>");
+		lblNewLabel_1.setForeground(new Color(255, 255, 255));
+		lblNewLabel_1.setFont(new Font("Yu Gothic UI Semilight", Font.PLAIN, 30));
+		lblNewLabel_1.setBounds(587, 283, 645, 150);
+		panel_1.add(lblNewLabel_1);
 		this.panel.setVisible(true);
 		contentPane.setLayout(new BorderLayout());
-
+		
 
 	}
+	
+	private void inizializzaPannello() {
+		try {
+            sfondo = ImageIO.read(new File("img/ristorantegiardino.png"));
+        } catch (IOException e) {
+            sfondo = null;
+        }
+		contentPane = new JPanel() {
+            public void paintComponent(Graphics g) {
+                if (sfondo != null) {
+                    g.drawImage(sfondo, 0, 0, null);
+                } else {
+                    g.setColor(Color.DARK_GRAY);
+                    g.fillRect(0, 0, getWidth(), getHeight());
+                }
+            }
+        };
+	}
 
+	private void changeBackground(String imagePath) {
+        try {
+            sfondo = ImageIO.read(new File(imagePath));
+            contentPane.repaint();
+        } catch (IOException e) {
+            System.err.println("Could not read image file: " + e.getMessage());
+        }
+    }
+	
 	public void stampa_menu(String c) {
-		 
+		this.changeBackground("img/ristorantegiardinoblur.png");
 		 try {
          c = URLEncoder.encode(c, StandardCharsets.UTF_8.toString());
        } catch (Exception e) {
@@ -190,7 +235,6 @@ public class Menu extends JFrame {
 		catch(IOException | JAXBException e) {
 			System.out.println(e.getMessage());
 		}
-		
 	}
 	
 	
@@ -258,7 +302,14 @@ public class Menu extends JFrame {
             e.printStackTrace();
         }
         ingredienti+=allergeni;
-        JOptionPane.showOptionDialog(null, "<html>"+ingredienti+"</html>", "INGREDIENTI E ALLERGENI", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{},null);
+        String imgnome = nome.trim();
+        System.out.println(imgnome);
+        ImageIcon immaginepiatto = new ImageIcon("img/"+imgnome+".png");
+        Image image = immaginepiatto.getImage().getScaledInstance(600, 400, Image.SCALE_SMOOTH);
+        ImageIcon imgpiatto = new ImageIcon(image);
+        UIManager.put("OptionPane.background", Color.WHITE);
+        UIManager.put("Panel.background", Color.WHITE);
+        JOptionPane.showOptionDialog(null, "<html>"+ingredienti+"</html>", "INGREDIENTI E ALLERGENI", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, imgpiatto, new Object[]{},null);
 		
 	}
 	
@@ -282,6 +333,8 @@ public class Menu extends JFrame {
 	           
 	        }
 	    };
+	 private JLabel lblNewLabel;
+	 private JLabel lblNewLabel_1;
 
 
 
@@ -330,6 +383,4 @@ public class Menu extends JFrame {
 		public void setTitolo(JLabel titolo) {
 			this.titolo = titolo;
 		}    
-
-		
 	}

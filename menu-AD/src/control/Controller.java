@@ -17,14 +17,11 @@ public class Controller implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-		
 			//finestra.stampa_menu();
 		//if(e.getSource() == finestra.getIngredienti())
 			//finestra.stampa_ingredienti();
 		if(e.getSource() == finestra.getSecondi()) {
 			finestra.stampa_menu(finestra.getSecondi().getName());
-			
 		}
 		if(e.getSource() == finestra.getDessert()) {
 			finestra.stampa_menu(finestra.getDessert().getName());
